@@ -11,9 +11,9 @@ const userSchema = new Schema({
     password: {type: 'string', trim: true, required: true},
     phone: {type: 'string', trim: true, required: true},
     photo: {type: 'string'},
-    contact: {type: 'string', trim: true, required: true},
+    contact: {type: 'string', trim: true},
     emailContact: {type: 'string', trim: true},
-    phoneContact: {type: 'string', trim: true, required: true},
+    phoneContact: {type: 'string', trim: true},
     polize: {type: 'string', trim: true},
     allergens: [{type: Schema.Types.ObjectId, ref:"allergens"}],
     searchs: [{type: Schema.Types.ObjectId, ref:"searchs"}]
