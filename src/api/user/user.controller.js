@@ -22,14 +22,17 @@ const postNewUser = async (req, res, next) => {
 }
 
 const loginUser = async (req, res, next) => {
+    //console.log(req.body);
     try {
         const userDB = await User.findOne({email: req.body.email});
         if(!userDB){
-            return next(setError(404, 'User not found'));
+            return res.status(200).json(setError(404, 'User not found'));
         }
         if (bcrypt.compareSync(req.body.password, userDB.password)) {
             const token = generateSign(userDB._id, userDB.email);
             return res.status(200).json({user:userDB,token:token});
+        }else{
+            return res.status(200).json(setError(404, 'Incorrect Password'));
         }
     } catch (error) {
         return next(error);
