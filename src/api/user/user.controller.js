@@ -4,18 +4,20 @@ const { setError } = require('../../utils/errors/error')
 const { generateSign, verifyJwt } = require('../../utils/jwt/jwtUtils')
 
 const postNewUser = async (req, res, next) => {
+    console.log(req.body)
+    console.log(req.file)
     try {
-        console.log(req.body);
         const newUser = new User(req.body);
         const userDuplicate = await User.findOne({email: newUser.email});
         if(userDuplicate){
-            return next(setError(404, 'Email existente'));
+            return res.status(200).json(setError(404, 'Email existente'));
         }
         if (req.file) {
             newUser.photo = req.file.path
         }
         const userDB = await newUser.save();
-        return res.status(201).json(userDB);
+        const token = generateSign(userDB._id, userDB.email);
+        return res.status(200).json({user:userDB,token:token});
     } catch (error) {
         return next(error)
     }
