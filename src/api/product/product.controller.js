@@ -39,6 +39,45 @@ const getProduct = async (req, res, next) => {
     }
 }
 
+const getProductByCode = async (req, res, next) => {
+    try {
+        const { code } = req.params
+        const productDB = await Product.findOne({code:code})
+        if (!productDB) {
+            return next(setError(404, 'Product not found'))
+        }
+        return res.status(200).json(productDB)
+    } catch (error) {
+        return next(setError(500, 'Product server error'))
+    }
+}
+
+const getProductByQr = async (req, res, next) => {
+    try {
+        const { qr } = req.params
+        const productDB = await Product.findOne({qr:qr})
+        if (!productDB) {
+            return next(setError(404, 'Product not found'))
+        }
+        return res.status(200).json(productDB)
+    } catch (error) {
+        return next(setError(500, 'Product server error'))
+    }
+}
+
+const getProductByNfc = async (req, res, next) => {
+    try {
+        const { nfc } = req.params
+        const productDB = await Product.findOne({nfc:nfc})
+        if (!productDB) {
+            return next(setError(404, 'Product not found'))
+        }
+        return res.status(200).json(productDB)
+    } catch (error) {
+        return next(setError(500, 'Product server error'))
+    }
+}
+
 const putProduct = async (req, res, next) => {
     try {
         const { id } = req.params
@@ -77,5 +116,8 @@ module.exports = {
     getAllProducts,
     getProduct,
     putProduct,
-    deleteProduct
+    deleteProduct,
+    getProductByCode,
+    getProductByQr,
+    getProductByNfc
 }

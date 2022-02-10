@@ -5,8 +5,8 @@ const productSchema = new Schema(
     {
         name: { type: 'string', trim: true , required: true },
         brand: { type: 'string', trim: true , required: true },
-        ingredients: [{ type: 'String', trim:true }],
-        notes: [{ type: 'String', trim:true }],
+        ingredients: { type: 'String', trim:true },
+        allergens: { type: 'String', trim:true },
         photo: { type: 'string', trim: true },
         qr: { type: 'string', trim: true },
         code: { type: 'string', trim: true },
