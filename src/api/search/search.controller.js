@@ -5,6 +5,7 @@ const { deleteFile } = require('../../utils/middleware/deleteFile')
 
 const postNewSearch = async (req, res, next) => {
     try {
+        console.log(req.body)
         const newSearch = new Search(req.body)
         const searchDB = await newSearch.save()
         return res.status(201).json(searchDB)

@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 const searchSchema = new Schema(
     {
         product: { type: Schema.Types.ObjectId, ref: "product", required: true },
+        notes: [{ type: 'String', trim:true }],
+        favorite: {type: Boolean, trim:true}
     },
     {
         timestamps: true
