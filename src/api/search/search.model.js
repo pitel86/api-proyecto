@@ -7,6 +7,7 @@ const searchSchema = new Schema(
         notes: [{ type: 'String', trim:true }],
         favorite: {type: Boolean, trim:true},
         diary: {type: Boolean, trim:true},
+        isAlergic: {type:String, trim:true, enum: ['Yes', 'No', 'Maybe']},
     },
     {
         timestamps: true

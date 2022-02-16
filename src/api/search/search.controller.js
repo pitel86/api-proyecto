@@ -15,15 +15,16 @@ const postNewSearch = async (req, res, next) => {
 }
 
 const getSearch = async (req, res, next) => {
+    console.log(req.params)
     try {
         const { id } = req.params
         const searchDB = await Search.findById(id).populate('product')
         if (!searchDB) {
-            return next(setError(404, 'Search not found'))
+            return res.status(200).json(setError(404, 'Search not found'))
         }
         return res.status(200).json(searchDB)
     } catch (error) {
-        return next(setError(500, 'Search server error'))
+        return res.status(200).json(setError(500, 'Search server error'))
     }
 }
 
@@ -41,8 +42,24 @@ const deleteSearch = async (req, res, next) => {
     }
 }
 
+const putSearch = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const putSearch = new Search(req.body)
+        putSearch._id = id
+        const searchDB = await Search.findByIdAndUpdate(id, putSearch)
+        if (!searchDB) {
+            return next(setError(404, 'Search not found'))
+        }
+        return res.status(200).json({ new: putSearch, old: searchDB })
+    } catch (error) {
+        return next(setError(500, 'Search put server error'))
+    }
+}
+
 module.exports = {
     postNewSearch,
     getSearch,
-    deleteSearch
+    deleteSearch,
+    putSearch
 }
