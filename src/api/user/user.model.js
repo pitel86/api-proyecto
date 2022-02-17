@@ -31,13 +31,7 @@ userSchema.pre("save", function (next) {
     next();
 });
 
-userSchema.pre("findOneAndUpdate", function (next) {
-    if (!validationPassword(this._update.password)) {
-        return next(setError(400, 'La contraseña no tiene los minimos requeridos'))
-    }
-    this._update.password = bcrypt.hashSync(this._update.password, 10);
-    next();
-});
+
 
 const User = mongoose.model('users', userSchema);
 module.exports = User;

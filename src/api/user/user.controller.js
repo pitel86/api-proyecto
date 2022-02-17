@@ -67,6 +67,7 @@ const getUser = async (req, res, next) => {
 const putUser = async (req, res, next) => {
     try {
         const { id } = req.params
+        console.log(req.body);
         const putUser = new User(req.body)
         putUser._id = id
         if (req.file) {
@@ -76,16 +77,37 @@ const putUser = async (req, res, next) => {
         const userDB = await User.findOneAndUpdate(id,putUser)
         
         if (!userDB) {
-            return next(setError(404, 'User not found'))
+            return res.status(200).json(setError(404, 'User not found'))
         }
         if (userDB.photo) deleteFile(userDB.photo)
         return res.status(200).json({ new: putUser, old: userDB })
     } catch (error) {
-        return next(setError(500, 'User Put server error'))
+        return res.status(200).json(setError(500, 'User Put server error'))
     }
+}
+
+const putUserSearch = async (req, res, next) => {
+    try {
+        console.log(req.body);
+        console.log(req.params.id);
+        const filter = { _id: req.params.id };
+        const userDB = await User.findOneAndUpdate(filter, {
+            $addToSet: {
+                searchs: req.body.searchs
+            } 
+        })
+        if(!userDB){
+            return res.status(200).json(setError(404, 'User not found'))
+        }
+        console.log(userDB);
+        return res.status(200).json(userDB)        
+    } catch (error) {
+        return res.status(200).json(setError(500, 'User fail'))
+    }
+
 }
 
 
 module.exports = {
-    postNewUser, loginUser, logOut, getUser, putUser
+    postNewUser, loginUser, logOut, getUser, putUser, putUserSearch
 }
